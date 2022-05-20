@@ -2,6 +2,7 @@ package com.example.selectionapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -15,11 +16,11 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
     CheckBox checkBoxSoup, checkBoxSushi, checkBoxPizza, checkBoxWater;
-    Button buttonOrder, buttonReset;
+    Button buttonOrder, buttonReset, buttonQuestionnaire;
     Switch switchDiet;
     String list = "", dietmsg = "Your Order will be served containing :";
     int i = 0;
-    String marked = "";
+    String marked = ""; // برای چک باکسی که اول انتخاب شده
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +37,19 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         checkBoxWater.setOnCheckedChangeListener(this);
         buttonReset = (Button) findViewById(R.id.buttonReset);
         buttonOrder = (Button) findViewById(R.id.buttonOrder);
+        buttonQuestionnaire = (Button) findViewById(R.id.buttonQuestionnaire);
         switchDiet = (Switch) findViewById(R.id.switchDiet);
+
+        /*buttonQuestionnaire.setOnClickListener(new View.OnClickListener() {
+            @Override
+            //ایجاد یک اینتنت برای ایجد ارتباط بین اکتیویتی ها و ارسال اطلاعاتی بین انها
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, MainActivity2.class);
+                intent.putExtra("foodList", list);
+                intent.putExtra("dietMessage", dietmsg);
+                startActivity(intent);
+            }
+        });*/
 
         buttonReset.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                     toast = Toast.makeText(MainActivity.this, "Please make sure you have selected at least one item from the options above!", Toast.LENGTH_SHORT);
                     TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
                     if (v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
                 }
                 else {
 
@@ -85,8 +99,14 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                     toast = Toast.makeText(MainActivity.this, dietmsg + list, Toast.LENGTH_SHORT);
                     TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
                     if (v != null) v.setGravity(Gravity.CENTER);
+
+                    toast.show();
+                    Intent intent = new Intent(MainActivity.this, MainActivity2.class);
+                    intent.putExtra("foodList", list);
+                    intent.putExtra("dietMessage", dietmsg);
+                    startActivity(intent);
+
                 }
-                toast.show();
             }
         });
         switchDiet.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
